@@ -9,6 +9,8 @@ global d2;
 d2 = 290;
 global d3;
 d3 = 78;
+global d4;
+d4 = 20;
 
 %%% Check the provided answers %%%
 %   A1
@@ -45,13 +47,14 @@ function dhTable = createDhTable(t1, t2, t3, t4, t5)
    global d1;
    global d2;
    global d3;
+   global d4;
    
    % Create the dh table
    dhTable = [  0       0       0       t1;
                 0       90      0       90 + t2;
                 d1      180     0       90;
                 d2      0       0       t3 - 90;
-                0       90      0       t4;
+                0       90      d4      t4;
                 0       t5      d3      0];
 end
      
