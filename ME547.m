@@ -14,22 +14,26 @@ d3 = 78;
 %   A1
 disp(EndEffector(createDhTable(0, -45, -90, 135, 0)));
 disp("Expected: [467.40, 0, -21.71]");
-disp("")
+disp(" ")
+disp(" ")
 
 %   A2
 disp(EndEffector(createDhTable(30, -90, -135, 135, 0)));
 disp("Expected: [245.56, 141.78, 54.44]");
-disp("")
+disp(" ")
+disp(" ")
 
 %   A3
 disp(EndEffector(createDhTable(-45, -30, -45, 90, 0)));
 disp("Expected: [411.04, -411.04, 34.57]");
-disp("")
+disp(" ")
+disp(" ")
 
 %   A4
 disp(EndEffector(createDhTable(-25, -70, -70, 110, 0)));
 disp("Expected: [410.49, -191.41, 271.00]");
-disp("")
+disp(" ")
+disp(" ")
 %%% Check the provided answers %%%
 
 
@@ -53,13 +57,10 @@ end
      
 % Compute the transformation matrix given the dh table values
 function T = Transform(ai_1, ali_1, di, ti)
-    % Compute a rundantly calculated value
-    val = sind(ti)*cosd(ali_1);
-    
     % Compute the transformation matrix
     T = [   cosd(ti)	-sind(ti)   0               ai_1;
-            val         val         -sind(ali_1)    -di*sind(ali_1);
-            val         val         cosd(ali_1)     di*cosd(ali_1);
+            sind(ti)*cosd(ali_1)	cosd(ti)*cosd(ali_1)	-sind(ali_1)    -di*sind(ali_1);
+            sind(ti)*sind(ali_1)	cosd(ti)*sind(ali_1)	cosd(ali_1)     di*cosd(ali_1);
             0           0           0               1];  
 end
 
@@ -71,5 +72,6 @@ function Epos = EndEffector(dhTable)
             Transform(dhTable(3, 1), dhTable(3, 2), dhTable(3, 3), dhTable(3, 4)) * ...
             Transform(dhTable(4, 1), dhTable(4, 2), dhTable(4, 3), dhTable(4, 4)) * ...
             Transform(dhTable(5, 1), dhTable(5, 2), dhTable(5, 3), dhTable(5, 4)) * ...
-            Transform(dhTable(6, 1), dhTable(6, 2), dhTable(6, 3), dhTable(6, 4));         
+            Transform(dhTable(6, 1), dhTable(6, 2), dhTable(6, 3), dhTable(6, 4)) * ...
+            [0; 0; 0; 1];         
 end
