@@ -14,32 +14,34 @@ d3 = 78;
 
 
 
-%%% Check the provided answers %%%
-%   A1
-disp("Expected: [467.40, 0, -21.71]");
-disp(EndEffector(createDhTable(0, -45, -90, 135, 0))');
-
-%   A2
-disp("Expected: [245.56, 141.78, 54.44]");
-disp(EndEffector(createDhTable(30, -90, -135, 135, 0))');
-
-%   A3
-disp("Expected: [411.04, -411.04, 34.57]");
-disp(EndEffector(createDhTable(-45, -30, -45, 90, 0))');
-
-%   A4
-disp("Expected: [410.49, -191.41, 271.00]");
-disp(EndEffector(createDhTable(-25, -70, -70, 110, 0))');
-%%% Check the provided answers %%%
-
-% theta_1 = sym('theta_1', 'real');
-% theta_2 = sym('theta_2', 'real');
-% theta_3 = sym('theta_3', 'real');
-% theta_4 = sym('theta_4', 'real');
-% theta_5 = sym('theta_5', 'real');
+% %%% Check the provided answers %%%
+% %   A1
+% disp("Expected: [467.40, 0, -21.71]");
+% disp(EndEffector(createDhTable(0, -45, -90, 135, 0))');
 % 
-% disp(EndEffector(createDhTable(theta_1, theta_2, theta_3, theta_4, theta_5))');
+% %   A2
+% disp("Expected: [245.56, 141.78, 54.44]");
+% disp(EndEffector(createDhTable(30, -90, -135, 135, 0))');
+% 
+% %   A3
+% disp("Expected: [411.04, -411.04, 34.57]");
+% disp(EndEffector(createDhTable(-45, -30, -45, 90, 0))');
+% 
+% %   A4
+% disp("Expected: [410.49, -191.41, 271.00]");
+% disp(EndEffector(createDhTable(-25, -70, -70, 110, 0))');
+% %%% Check the provided answers %%%
 
+theta_1 = sym('theta_1', 'real');
+theta_2 = sym('theta_2', 'real');
+theta_3 = sym('theta_3', 'real');
+theta_4 = sym('theta_4', 'real');
+theta_5 = sym('theta_5', 'real');
+
+pos = EndEffector(createDhTable(theta_1, theta_2, theta_3, theta_4, theta_5));
+disp(latex(simplify(pos(1))));
+disp(latex(simplify(pos(2))));
+disp(latex(simplify(pos(3))));
 
 % Create the dh table given the angles of the robot
 function dhTable = createDhTable(t1, t2, t3, t4, t5)
@@ -50,24 +52,24 @@ function dhTable = createDhTable(t1, t2, t3, t4, t5)
    
    % Create the dh table
    dhTable = [  0       0       0       t1;
-                0       -90     0       t2;
-                d1      180     0       t3;
+                0       deg2rad(-90)     0       t2;
+                d1      deg2rad(180)     0       t3;
                 d2      0       0       t4;
-                0       90      0       t5;
+                0       deg2rad(90)      0       t5;
                 0       0       d3      0];
 end 
      
 % Compute the transformation matrix given the dh table values
 function T = Transform(ai_1, ali_1, di, ti)
     % Compute a rundantly calculated value
-    sc = sind(ti)*cosd(ali_1);
-    cc = cosd(ti)*cosd(ali_1);
-    ss = sind(ti)*sind(ali_1);
-    cs = cosd(ti)*sind(ali_1);
+    sc = sin(ti)*cos(ali_1);
+    cc = cos(ti)*cos(ali_1);
+    ss = sin(ti)*sin(ali_1);
+    cs = cos(ti)*sin(ali_1);
     % Compute the transformation matrix
-    T = [   cosd(ti)	-sind(ti)   0               ai_1;
-            sc          cc         -sind(ali_1)    -di*sind(ali_1);
-            ss          cs         cosd(ali_1)     di*cosd(ali_1);
+    T = [   cos(ti)	-sin(ti)   0               ai_1;
+            sc          cc         -sin(ali_1)    -di*sin(ali_1);
+            ss          cs         cos(ali_1)     di*cos(ali_1);
             0           0           0               1];  
 end
 
