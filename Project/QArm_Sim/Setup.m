@@ -1,3 +1,12 @@
 clear; clc; close all;
 run('QArm_DataFile.m');
-qarm_rigid_body_tree = importrobot('main_sim_2019/Robot (Do not modify)');
+% qarm_rigid_body_tree = importrobot('main_sim_2019/Robot (Do not modify)');
+kpx = 1000;
+kix = 0;
+kdx = 100;
+kpy = 1000;
+kiy = 0;
+kdy = 100;
+kpz = 1;
+kiz = 1;
+kdz = 0.1;
